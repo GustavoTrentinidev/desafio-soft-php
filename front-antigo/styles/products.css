@@ -1,0 +1,105 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.main-title{
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.create-product-info{
+    display: grid;
+    grid-template-areas: 
+        "Product Amount Category Price"
+        "Button Button Button Button"
+    ;
+    grid-row-gap: 0.4rem;
+    height: 15%;
+    margin-bottom: 2rem;
+}
+
+.product-name{
+    grid-area: Product;
+}
+
+.product-amount{
+    grid-area: Amount;
+}
+
+.product-amount input, .product-name input, .product-price input, .product-gategory select{
+    width: calc(100% - 2rem) ;
+}
+
+.product-gategory{
+    grid-area: Category;
+}
+
+.product-price{
+    grid-area: Price;
+}
+
+
+
+.add-btn{
+    grid-area: Button;
+    background-color: #1d59a1;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    cursor: pointer;
+}
+
+/* label{
+    display: none;
+} */
+
+input, select{
+    outline: 0;
+    background-color: rgba(128, 128, 128, 0.13);
+    border: 1px solid rgba(128, 128, 128, 0.726);
+    padding: 0.4rem;
+
+}
+
+.products{
+    padding-left: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.products-title{
+    font-size: larger;
+    font-weight: bold;
+}
+
+.table-holder{
+    display: flex;
+    height: 400px;
+    overflow-y: auto;
+    text-align: center;
+    justify-content: start;
+    align-items: start;
+    padding-right: 0.5rem;
+}
+
+.products table td, .products table tr, .products table {
+    border-collapse: collapse;
+    width: fit-content;
+    border: 1px solid #fff;
+} 
+
+.products table tr:nth-child(even){
+    background-color: #4179bd;
+    color: #fff;
+}
+
+.products table {
+    margin-top: 2rem;
+}

@@ -1,0 +1,79 @@
+.main{
+    margin: 1rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    height: calc(100vh - 5rem);
+}
+
+.create-category{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-right: 1px solid gray;
+}
+
+.category-tax input, .category-name input{
+    outline: 0;
+    background-color: rgba(128, 128, 128, 0.13);
+    border: 1px solid rgba(128, 128, 128, 0.726);
+    padding: 0.6rem;
+}
+
+.add-category{
+    width: 10rem;
+    border: 0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1d59a1;
+    color: white;
+}
+
+.categories{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.categories table, .categories tr, .categories th, .categories td{
+    border: 1px;    
+    border-style: solid;
+    border-color: #fff;    
+    border-collapse: collapse;
+}
+
+.categories tr:nth-child(even){
+    background-color: #4179bd;
+    color: #fff;
+}
+
+
+
+.table-head{
+    position: sticky;
+    top: -1px;
+    background-color: #fff;
+    border: 1px solid gray;
+    padding: 0.2rem;
+    box-sizing: border-box;
+}
+
+.table-holder{
+    display: flex;
+    height: 400px;
+    overflow-y: auto;
+    text-align: center;
+    justify-content: start;
+    align-items: start;
+    padding-right: 0.5rem;
+}
+
+label{
+    display: none;
+}
+

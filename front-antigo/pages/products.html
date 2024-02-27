@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suite Store Products</title>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/products.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="store-title">
+            <a href="./home.html">Suite Store</a>
+        </h1>
+        <ul class="header-itens">
+            <li>
+                <a href="./products.html">Products</a>
+            </li>
+            <li>
+                <a href="./categories.html">Categories</a>
+            </li>
+            <li>
+                <a href="./history.html">History</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <span class="main-title">Create Product</span>
+        <form onsubmit="suiteStore.createProduct(event)" class="create-product-info">
+            <div class="product-name">
+                <label for="product-name">Product name: </label>
+                <input type="text" required id="product-create-name" placeholder="Product">
+            </div>
+            <div class="product-amount">
+                <label for="product-amount">Amount: </label>
+                <input type="number" required id="product-create-amount-available" name="product-amount" min="1" placeholder="Amount">
+            </div>
+            <div class="product-price">
+                <label for="product-price">Unit Price: </label>
+                <input type="number" min="0.01" step="0.01" required id="product-create-price" name="product-price" placeholder="Price">
+            </div>
+            <div class="product-gategory">
+                <label for="category">Category: </label>
+                <select name="category" required id="select-category">
+                    <option value="" selected disabled>Category</option>
+                </select>
+            </div>
+            <input type="submit" class="add-btn" value="Add Product">
+        </form>
+        <div class="products">
+            <span class="products-title">All products</span>
+            <div class="table-holder">
+                <table id="product-table">
+                    <tr>
+                        <th>Code</th>
+                        <th>Product</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </table>
+            </div>
+        </div> 
+    </div>
+    <script src="../index.js"></script>
+</body>
+</html>

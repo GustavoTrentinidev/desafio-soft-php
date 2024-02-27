@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suite Store History</title>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/history.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="store-title">
+            <a href="./home.html">Suite Store</a>
+        </h1>
+        <ul class="header-itens">
+            <li>
+                <a href="./products.html">Products</a>
+            </li>
+            <li>
+                <a href="./categories.html">Categories</a>
+            </li>
+            <li>
+                <a href="./history.html">History</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="past-purchases">
+            <div class="table-holder">
+                <table id="purchase-history-table">
+                    <tr>
+                        <th>Code</th>
+                        <th>Tax</th>
+                        <th>Total</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="view-display">
+            <div id="noitemselectd">No item selected yet...</div>
+            <div class="view-purchase" id="view-purchase">
+                <span class="close" onclick="suiteStore.closeViewItem()">x</span>
+                <span class="purchase-code" id="purchase-code">
+                    Purchase 001
+                </span>
+                <div class="table-holder">
+                    <table id="purchase-table">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Amount</th>
+                            <th>Total</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="purchase-info">
+                    <div class="tax">
+                        <label for="taxes">Taxes: </label>
+                        <input type="text" name="taxes" id="purchase-tax" disabled value="R$10.00">
+                    </div>
+                    <div class="total">
+                        <label for="total">Total: </label>
+                        <input type="text" name="total" id="purchase-total" disabled value="R$110.00">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../index.js"></script>
+</body>
+</html>

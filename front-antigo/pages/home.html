@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suite Store</title>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/home.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="store-title">
+            <a href="./home.html">Suite Store</a>
+        </h1>
+        <ul class="header-itens">
+            <li>
+                <a href="./products.html">Products</a>
+            </li>
+            <li>
+                <a href="./categories.html">Categories</a>
+            </li>
+            <li>
+                <a href="./history.html">History</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <form onsubmit="suiteStore.addProductToCart(event)" class="add-product-info">
+            <div class="select-product">
+                <label for="products">Products: </label>
+                <select name="products" id="home-product-select" onchange="suiteStore.changeTaxAndPriceInputValuesOnSelectChange(event)">
+                    <option value="" selected disabled>Product</option>
+                </select>
+            </div>
+            <div class="amount">
+                <label for="amount">Amount:</label>
+                <input type="number" required min="1" id="add-to-cart-amount" disabled onchange="suiteStore.calcPrice(event)" onkeyup="suiteStore.calcPrice(event)" name="amount" placeholder="Amount">
+            </div>
+            <div class="tax">
+                <label for="tax">Tax value:</label>
+                <input type="text" disabled id="add-to-cart-tax" placeholder="Tax" name="tax">
+            </div>
+            <div class="price">
+                <label for="price">Price value:</label>
+                <input type="text" placeholder="Price" id="add-to-cart-price" disabled name="price">
+            </div>
+            <input type="submit" class="add-product" onclick="" value="Add to cart">
+            <div class="amount-available">Product amount available: <span id="amount-available"></span></div>
+        </form>
+        <div class="cart">
+            <span class="cart-title">Cart:</span>
+            <table id="cart-table">
+                <tr>
+                    <th>Order</th>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                </tr>
+            </table>
+            <div class="cart-tax-info">
+                <label for="cart-tax">Tax: </label>
+                <input type="text" disabled name="tax" id="cart-taxes" value="R$0.00"> 
+            </div>
+            <div class="cart-total-value">
+                <label for="cart-total">Total: </label>
+                <input type="text" disabled name="cart-total" id="cart-total" value="R$110.00"> 
+            </div>
+            <div class="cart-operations">
+                <button class="cancel" onclick="suiteStore.cancelCart()">Cancel</button>
+                <button class="finish" onclick="suiteStore.finishCart()">Finish</button>
+            </div>
+            <div class="popup error" id="purchase-error">The selected amount exceeds the product amount existent.</div>
+            <div class="popup success" id="purchase-completed">Purchase Completed!</div>
+        </div>
+    </div>
+    <script src="../index.js"></script>
+</body>
+</html>

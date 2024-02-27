@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suite Store Categories</title>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/categories.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="store-title">
+            <a href="./home.html">Suite Store</a>
+        </h1>
+        <ul class="header-itens">
+            <li>
+                <a href="./products.html">Products</a>
+            </li>
+            <li>
+                <a href="./categories.html">Categories</a>
+            </li>
+            <li>
+                <a href="./history.html">History</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <form onsubmit="suiteStore.createCategory(event)" class="create-category">
+            <div class="category-name">
+                <label for="category-name">Category name: </label>
+                <input type="text" placeholder="Category name" required id="category-name" name="category-name">
+            </div>
+            <div class="category-tax">
+                <label for="category-tax">Tax: </label>
+                <input type="number" placeholder="Tax (%)" required min="1" max="1000" step="0.01" id="category-tax" name="category-tax">
+            </div>
+            <input class="add-category" type="submit" value="Add category">
+        </form>
+        <div class="categories">
+            <div class="table-holder">
+                <table id="categories-table">
+                    <tr class="table-head">
+                        <th>Code</th>
+                        <th>Category</th>
+                        <th>Tax</th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="../index.js"></script>
+</body>
+</html>

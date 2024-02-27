@@ -1,0 +1,194 @@
+.main{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: calc(100vh - 5rem);
+    margin: 1rem;
+}
+
+
+.add-product-info{
+    display: grid;
+    grid-template-areas: 
+        "Product Product Product Product"
+        "Amount Amount Tax Price"
+        "Button Button Button Button"
+    ;
+    grid-row-gap: 0.4rem;
+    height: 15%;
+}
+
+.select-product{
+    grid-area: Product;
+}
+
+.amount{
+    grid-area: Amount;
+}
+
+.amount input, .price input, .tax input{
+    width: calc(100% - 2rem) ;
+}
+
+.select-product select{
+    width: calc(100% - 1rem);
+}
+
+.tax{
+    grid-area: Tax;
+}
+
+.price{
+    grid-area: Price;
+}
+
+input, select{
+    outline: 0;
+    background-color: rgba(128, 128, 128, 0.13);
+    border: 1px solid rgba(128, 128, 128, 0.726);
+    padding: 0.4rem;
+}
+
+.add-product{
+    grid-area: Button;
+    background-color: #1d59a1;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    cursor: pointer;
+}
+
+
+/* label {
+    display: none;
+} */
+
+
+.cart{
+    border-left: 1px solid gray;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.cart-title{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+.cart table td, .cart table tr, .cart table {
+    border-collapse: collapse;
+    padding: 0.2rem;
+    text-align: center;
+    border: 1px solid #fff;
+} 
+
+.cart table td:last-child{
+    border: 0;
+}
+
+.cart table tr:nth-child(even){
+    background-color: #4179bd;
+    color: #fff;
+}
+
+.cart table th {
+    width: 25%;
+}
+
+.cart-tax-info, .cart-total-value, .cart-operations{
+    position: absolute;
+    right: 2rem;
+} 
+
+.cart-tax-info{
+    bottom: 6rem;
+}
+
+.cart-total-value{
+    position: absolute;
+    bottom: 4rem;
+}
+
+.cart-tax-info label, .cart-total-value label{
+    display: initial;
+    font-weight: bold;
+}
+
+.cart-tax-info input, .cart-total-value input{
+    border: none;
+    background-color: #fff;
+    width: 5rem;
+}
+
+.cart-operations{
+    bottom: 1rem;
+}
+
+.cart-operations button{
+    width: 10rem;
+    border: 0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cancel{
+    background-color: rgba(128, 128, 128, 0.363);
+}
+
+.finish {
+    background-color: #1d59a1;
+    color: white;
+}
+
+.success{
+    background-color: rgb(112, 173, 19);
+}
+
+.error{
+    background-color: rgb(168, 43, 43);
+}
+
+.popup{
+    display: none;
+    position: absolute;
+    bottom: -5rem;
+    border-radius: 5px;
+    width: 15rem;
+    text-align: center;
+    color: #fff;
+    font-weight: bolder;
+    padding: 0.5rem;
+    animation: appear 5s ease-in;    
+}
+
+.amount-available{
+    font-size: 12px;
+}
+
+@keyframes appear {
+    0%{
+        opacity: 0;
+        bottom: -1rem;
+    }
+    5%{
+        opacity: 1;
+        bottom: 1rem;
+    }
+    50%{
+        opacity: 1;
+        bottom: 1rem;   
+    }
+    95%{
+        opacity: 1;
+        bottom: 1rem;
+    }
+    100% {
+        opacity: 0;
+        bottom: -1rem;
+    }
+}
