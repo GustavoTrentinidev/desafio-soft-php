@@ -5,22 +5,64 @@ require_once("../services/categories.php");
 
 
 Class Categories extends CategoriesService {
-
     
-    function runRequestMethod(){
+    private static $instance;
+    
+    public static function getInstance(){
+        if (!self::$instance){
+
+            self::$instance = new self();
+        
+        }
+        return self::$instance;
+    }
+
+
+    public static $name;
+    public static $tax;
+    
+
+    public function __construct(){
+        if(!empty($_POST)){
+            self::$name = (string)$_POST["name"];
+            self::$tax = (float)$_POST["tax"];
+            parent::__construct(self::$name, self::$tax);
+            return;
+        }
+        parent::__construct();
+    }
+
+    public static function runRequestMethod(){
         
         $method = $_SERVER['REQUEST_METHOD'];
         
         if($method == "GET"){
-            echo $this->readCategories();
-        } else if($method == "POST"){
-            echo $this->createCategory();
-        } else if($method == "DELETE"){
-            echo $this->deleteCategory();
+
+            $id = null;
+
+            if($_SERVER['QUERY_STRING']){
+                $id = explode('=', $_SERVER['QUERY_STRING'])[1];
+                $id = (int)$id;
+            }
+
+            echo parent::readCategories($id);
+        }
+         else if($method == "POST"){
+
+            echo parent::createCategory();
+
+        }
+         else if($method == "DELETE"){
+            
+            $id = explode('=', $_SERVER['QUERY_STRING'])[1];
+
+            echo parent::deleteCategory($id);
         }
     }
 
 }
 
-$categoriesController = new Categories();
-$categoriesController->runRequestMethod();
+Categories::getInstance()::runRequestMethod();
+
+// $categoriesController = new Categories();
+// $categoriesController::runRequestMethod();

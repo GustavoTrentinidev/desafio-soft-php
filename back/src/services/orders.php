@@ -5,14 +5,21 @@ require_once("../services/orderItem.php");
 
 class OrdersService extends Connection { 
 
-    public $tax;
-    public $total;
+    public static $orderItems = [];
 
-    function createOrder(){
-        $orderItems = json_decode(file_get_contents('php://input'), true);
+    public static $orderItemService;
+
+    public function __construct(array $orderItems = []){
+        parent::__construct();
+        self::$orderItems = $orderItems;
+        self::$orderItemService = OrderItemService::getInstance();
+    }
+
+    public static function createOrder(){
+        $orderItems = json_decode(file_get_contents('php://input'), true); //MANDAR pelo controller
         $id = 1;
 
-        $ordersLength = $this->connection->query("SELECT * FROM orders");
+        $ordersLength = parent::$connection->query("SELECT * FROM orders");
         $ordersLength = $ordersLength->fetchALL();
         
 
@@ -20,53 +27,55 @@ class OrdersService extends Connection {
             $id += count($ordersLength); 
         }
 
-        $order = $this->connection->prepare("INSERT INTO orders (id, tax, total) values ($id, 0, 0)");
+        $order = parent::$connection->prepare("INSERT INTO orders (id, tax, total) values ($id, 0, 0)");
         $order->execute();
 
-        $orderItemService = new OrderItemService();
+        
         foreach($orderItems as $item=>$key){
-            $productTaxAndPrice = $orderItemService->createOrderItem($key["id"], $id, $key["amount"]);
-            $this->calcOrderTaxes($productTaxAndPrice);
+            $productTaxAndPrice = self::$orderItemService::createOrderItem($key["id"], $id, $key["amount"]);
+            if(!empty($productTaxAndPrice["error"])){
+                return $productTaxAndPrice["error"];
+            }
+            self::calcOrderTaxes($productTaxAndPrice);
         }
-        $this->updateTaxAndTotalOrderValue($id);
+        self::updateTaxAndTotalOrderValue($id);
         return;
     }
+    
+    public static $tax = 0; 
+    public static $total = 0; 
 
-    function calcOrderTaxes($productTaxAndPrice){
+    public static function calcOrderTaxes($productTaxAndPrice){
         ["tax" => $tax, "price" => $price, "amount"=>$amount] = $productTaxAndPrice;
         $tax = (float)$tax;
         $price = (float)$price;
         $tax = ($tax / 100) * $price * $amount;
-        $this->tax += $tax;
-        $this->total += $tax + $price * $amount;
+        self::$tax += $tax;
+        self::$total += $tax + $price * $amount;
     }
 
-    function updateTaxAndTotalOrderValue($id){
-        $update = $this->connection->prepare
+    public static function updateTaxAndTotalOrderValue($id){
+        $tax = self::$tax;
+        $total = self::$total;
+        $update = parent::$connection->prepare
         ("UPDATE 
             orders
         SET
-            tax = $this->tax, total = $this->total
+            tax = $tax, total = $total
         WHERE id = $id
         ");
         $update->execute();
     }
 
-    function readOrders(){
-        if($_SERVER['QUERY_STRING']){
-            return $this->readSpecificOrder();
-        }
-        
-        $orders = $this->connection->query("SELECT * FROM orders");
+    public static function readOrders(){
+        $orders = parent::$connection->query("SELECT * FROM orders");
         $orders = $orders->fetchALL();
         return json_encode($orders);
     }
 
-    function readSpecificOrder(){
-        $id = explode('=', $_SERVER['QUERY_STRING'])[1];
-        $id = (int)$id;
-        
-        $order_info = $this->connection->query
+    public static function readSpecificOrder($id){
+    
+        $order_info = parent::$connection->query
         ("SELECT
             o.tax as order_tax,
             o.total as order_total,
@@ -78,7 +87,7 @@ class OrdersService extends Connection {
         ");
         $order_info = $order_info->fetchALL();
 
-        $order_items = $this->connection->query
+        $order_items = parent::$connection->query
         ("SELECT
             oi.name,
             oi.price,

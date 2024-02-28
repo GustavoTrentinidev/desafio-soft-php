@@ -2,51 +2,42 @@
 require_once("../index.php");
 
 class CategoriesService extends Connection {
+
+    static public $name;
+    static public $tax;
+
+    public function __construct(string $name = '', float $tax = 0){
+        parent::__construct();
+        self::$name = $name;
+        self::$tax = $tax;
+    }
     
-    function readCategories(){ 
-
-        if($_SERVER['QUERY_STRING']){
-            
-            $id = explode('=', $_SERVER['QUERY_STRING'])[1];
-            $id = (int)$id;
-
+    public static function readCategories($id){ 
             if($id){
-                $category = $this->connection->prepare("SELECT * FROM categories where id = :id");
+                $category = parent::$connection->prepare("SELECT * FROM categories where id = :id");
                 $category->bindParam(':id', $id, PDO::PARAM_INT);
                 $category->execute();
                 $category = $category->fetch();
                 return json_encode($category);
             }
-        }
-        $categories = $this->connection->query("SELECT * FROM categories where active = 1");
+        
+        $categories = parent::$connection->query("SELECT * FROM categories where active = 1");
         $categories = $categories->fetchALL();
         return json_encode($categories);
     }
 
-    function createCategory(){
-        $id = 1;
-        $name = (string)$_POST["name"];
-        $tax = (float)$_POST["tax"];
-
-        $categoriesLength = $this->connection->query("SELECT * from categories");
-        $categoriesLength = $categoriesLength->fetchALL();
-
-        if($categoriesLength){
-            $id += count($categoriesLength); 
-        }
-
-        $category = $this->connection->prepare("INSERT INTO categories VALUES (:id, :name, :tax)");
-        $category->bindParam(':id', $id, PDO::PARAM_INT);
-        $category->bindParam(':name', $name, PDO::PARAM_STR);
-        $category->bindParam(':tax', $tax, PDO::PARAM_STR);
+    public static function createCategory(){
+        $category = parent::$connection->prepare("INSERT INTO categories (name, tax) VALUES (:name, :tax)");
+        $category->bindParam(':name', self::$name, PDO::PARAM_STR);
+        $category->bindParam(':tax', self::$tax, PDO::PARAM_STR);
         $category->execute();
         return true;
     }
 
-    function deleteCategory(){
-        $id = explode('=', $_SERVER['QUERY_STRING'])[1];
-        if($this->verifyIfCanDelete($id)){
-            $delCategory = $this->connection->prepare("UPDATE categories SET active = 0 WHERE id = :id");
+    public static function deleteCategory($id){
+        
+        if(self::verifyIfCanDelete($id)){
+            $delCategory = parent::$connection->prepare("UPDATE categories SET active = 0 WHERE id = :id");
             $delCategory->bindParam(':id', $id, PDO::PARAM_INT);
             $delCategory->execute();
             return json_encode(array("status"=>"ok"));
@@ -54,8 +45,8 @@ class CategoriesService extends Connection {
         return (json_encode(array("status"=>"error")));
     }
 
-    function verifyIfCanDelete($id){
-        $productsOfCategory = $this->connection->query
+    public static function verifyIfCanDelete($id){
+        $productsOfCategory = parent::$connection->query
         ("SELECT 
             *
         FROM
@@ -69,5 +60,4 @@ class CategoriesService extends Connection {
         }
         return true;
     }
-
 }

@@ -3,12 +3,25 @@ require_once("../index.php");
 
 class ProductsService extends Connection {
 
-    function readProducts(int $parameterId = 0){
+    public static $name;
+    public static $price;
+    public static $category_id;
+    public static $amount;
+
+    public function __construct(string $name = '', float $price = 0, int $category_id = 0, int $amount = 0,) {
+        parent::__construct();
+        self::$name = $name; 
+        self::$price = $price; 
+        self::$category_id = $category_id; 
+        self::$amount = $amount; 
+    }
+
+    public static function readProducts(int $parameterId = 0){
         if($_SERVER['QUERY_STRING'] || $parameterId ){
             $parameterId ? $id = $parameterId : $id = explode("=", $_SERVER['QUERY_STRING'])[1];
             $id = (int)$id;
             if($id){
-                $product = $this->connection->prepare
+                $product = parent::$connection->prepare
                 ("SELECT 
                     p.id,
                     p.name,
@@ -32,7 +45,7 @@ class ProductsService extends Connection {
             }
         }
 
-        $products = $this->connection->query
+        $products = parent::$connection->query
         ("SELECT
             p.id,
             p.name,
@@ -53,48 +66,38 @@ class ProductsService extends Connection {
 
     }
 
-    function createProduct(){
-        $id = 1;
-        $name = $_POST["name"];
-        $price = $_POST["price"];
-        $category_id = $_POST["category_id"];
-        $amount = $_POST["amount"];
-
-        $productsLength = $this->connection->query("SELECT * FROM products");
-        $productsLength = $productsLength->fetchALL();
-        
-        if($productsLength){
-            $id += count($productsLength);
-        }
-
-        $product = $this->connection->prepare
+    public static function createProduct(){
+        $product = parent::$connection->prepare
         ("INSERT INTO 
-            products (id, name, price, category_id, amount)
+            products (name, price, category_id, amount)
         VALUES 
-            (:id, :name, :price, :category_id, :amount)
+            (:name, :price, :category_id, :amount)
         ");
-        $product->bindParam(':id', $id, PDO::PARAM_INT);
-        $product->bindParam(':name', $name, PDO::PARAM_STR);
-        $product->bindParam(':price', $price, PDO::PARAM_STR);
-        $product->bindParam(':category_id', $category_id, PDO::PARAM_INT);
-        $product->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $product->bindParam(':name', self::$name, PDO::PARAM_STR);
+        $product->bindParam(':price', self::$price, PDO::PARAM_STR);
+        $product->bindParam(':category_id', self::$category_id, PDO::PARAM_INT);
+        $product->bindParam(':amount', self::$amount, PDO::PARAM_INT);
         $product->execute();
         return true;
     }
 
-    function deleteProduct(){
+    public static function deleteProduct(){
         $id = explode("=", $_SERVER['QUERY_STRING'])[1];
         $id = (int)$id;
-        $delProduct = $this->connection->prepare("UPDATE products SET active = 0 WHERE id = :id");
+        $delProduct =parent::$connection->prepare("UPDATE products SET active = 0 WHERE id = :id");
         $delProduct->bindParam(":id", $id, PDO::PARAM_INT);
         $delProduct->execute();
         return 1;
     } 
 
-    function updateProductStockValue($product, $amount){
-        $newAmount = $product["amount"] - $amount;
-        $update = $this->connection->prepare
-        ("UPDATE products SET amount = $newAmount WHERE id = {$product['id']}");
-        $update->execute();
+    public static function updateProductStockValue($product, $amount){
+        if($product["amount"] >= $amount){
+            $newAmount = $product["amount"] - $amount;
+            $update = parent::$connection->prepare
+            ("UPDATE products SET amount = $newAmount WHERE id = {$product['id']}");
+            $update->execute();
+            return true;
+        }
+        return false;
     }
 }

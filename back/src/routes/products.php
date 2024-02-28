@@ -5,20 +5,49 @@ require_once("../services/products.php");
 
 
 class Products extends ProductsService {
+
+    private static $instance;
+
+    public static function getInstance(){
+
+        if(!(self::$instance)){
+            
+            self::$instance = new self();
+
+        }
+        return self::$instance;
+    }
+
+    public function __construct(){
+        if(!empty($_POST)){
+            $name = $_POST["name"];
+            $price = $_POST["price"];
+            $category_id = $_POST["category_id"];
+            $amount = $_POST["amount"];
+            parent::__construct($name, $price, $category_id, $amount);
+            return;
+        }
+        parent::__construct();
+
+    }
     
-    function runRequestMethod(){
+    public static function runRequestMethod(){
         
         $method = $_SERVER['REQUEST_METHOD'];
         
         if($method == "GET"){
-            echo $this->readProducts();
+
+            echo self::readProducts();
+
         } else if($method == "POST"){
-            echo $this->createProduct();
+
+            echo self::createProduct();
+
         } else if($method == "DELETE"){
-            echo $this->deleteProduct();
+
+            echo self::deleteProduct();
         }
     }
 }
 
-$productsController = new Products();
-$productsController->runRequestMethod();
+Products::getInstance()::runRequestMethod();
