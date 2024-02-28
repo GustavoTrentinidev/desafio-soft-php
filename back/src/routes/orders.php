@@ -44,8 +44,8 @@ class Orders extends OrdersService {
             echo parent::readOrders();
             
         } else if($method == "POST"){
-            
-            echo parent::createOrder();
+            $orderItems = json_decode(file_get_contents('php://input'), true);
+            echo parent::createOrder($orderItems);
         
         }
     }

@@ -15,10 +15,8 @@ class OrdersService extends Connection {
         self::$orderItemService = OrderItemService::getInstance();
     }
 
-    public static function createOrder(){
-        $orderItems = json_decode(file_get_contents('php://input'), true); //MANDAR pelo controller
+    public static function createOrder($orderItems){
         $id = 1;
-
         $ordersLength = parent::$connection->query("SELECT * FROM orders");
         $ordersLength = $ordersLength->fetchALL();
         
