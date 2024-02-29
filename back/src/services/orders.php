@@ -1,6 +1,7 @@
 <?php
 require_once("../index.php");
 require_once("../services/orderItem.php");
+require_once("../exceptions/customException.php");
 
 
 class OrdersService extends Connection { 
@@ -28,16 +29,16 @@ class OrdersService extends Connection {
         $order = parent::$connection->prepare("INSERT INTO orders (id, tax, total) values ($id, 0, 0)");
         $order->execute();
 
-        
-        foreach($orderItems as $item=>$key){
-            $productTaxAndPrice = self::$orderItemService::createOrderItem($key["id"], $id, $key["amount"]);
-            if(!empty($productTaxAndPrice["error"])){
-                return $productTaxAndPrice["error"];
+        try {
+            foreach($orderItems as $item=>$key){
+                $productTaxAndPrice = self::$orderItemService::createOrderItem($key["id"], $id, $key["amount"]);
+                self::calcOrderTaxes($productTaxAndPrice);
             }
-            self::calcOrderTaxes($productTaxAndPrice);
+            self::updateTaxAndTotalOrderValue($id);
+        } catch (CustomException $e){
+            parent::$connection->prepare("DELETE FROM orders WHERE id = $id")->execute();
+            throw new CustomException("Couldn't create order duo to a stock problem", 409);
         }
-        self::updateTaxAndTotalOrderValue($id);
-        return;
     }
     
     public static $tax = 0; 

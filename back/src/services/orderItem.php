@@ -1,6 +1,7 @@
 <?php
 require_once("../index.php");
 require_once("../services/products.php");
+require_once("../exceptions/customException.php");
 
 
 class OrderItemService extends Connection {
@@ -33,9 +34,9 @@ class OrderItemService extends Connection {
         $price = $product["price"];
         $tax = $product["tax"];
         
-        $stockRequest = self::$productService::updateProductStockValue($product, $amount);
         
-        if($stockRequest == true){
+        try {
+            self::$productService::updateProductStockValue($product, $amount);
             $orderItem = parent::$connection->prepare
             ("INSERT INTO order_item (name, price, amount, tax, product_id, order_id)
             VALUES (:name, :price, :amount, :tax, $productID, $orderID)
@@ -45,9 +46,11 @@ class OrderItemService extends Connection {
             $orderItem->bindParam(":amount", $amount, PDO::PARAM_INT);
             $orderItem->bindParam(":tax", $tax, PDO::PARAM_STR);
             $orderItem->execute();
-    
             return array("tax"=>$tax, "price"=>$price, "amount"=>$amount);
+        } catch (CustomException $e) {
+            echo $e;
+            throw $e;
         }
-        return array("error"=>"Could not buy $name because it exceeds the stock amount.");
+
     }
 }

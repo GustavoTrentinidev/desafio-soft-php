@@ -1,5 +1,7 @@
 <?php
 require_once("../index.php");
+require_once("../exceptions/customException.php");
+
 
 class CategoriesService extends Connection {
 
@@ -40,9 +42,9 @@ class CategoriesService extends Connection {
             $delCategory = parent::$connection->prepare("UPDATE categories SET active = 0 WHERE id = :id");
             $delCategory->bindParam(':id', $id, PDO::PARAM_INT);
             $delCategory->execute();
-            return json_encode(array("status"=>"ok"));
+            return;
         }
-        return (json_encode(array("status"=>"error")));
+        throw new CustomException("Couldn't delete the category because it is a FK in some product" , 401);
     }
 
     public static function verifyIfCanDelete($id){

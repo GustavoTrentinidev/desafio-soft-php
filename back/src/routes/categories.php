@@ -55,8 +55,11 @@ Class Categories extends CategoriesService {
          else if($method == "DELETE"){
             
             $id = explode('=', $_SERVER['QUERY_STRING'])[1];
-
-            echo parent::deleteCategory($id);
+            try {
+                echo parent::deleteCategory($id);
+            } catch (CustomException $e){
+                echo $e;
+            }
         }
     }
 

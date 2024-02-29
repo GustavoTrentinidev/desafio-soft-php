@@ -1,5 +1,6 @@
 <?php
 require_once("../index.php");
+require_once("../exceptions/customException.php");
 
 class ProductsService extends Connection {
 
@@ -91,6 +92,7 @@ class ProductsService extends Connection {
     } 
 
     public static function updateProductStockValue($product, $amount){
+        $name = $product["name"];
         if($product["amount"] >= $amount){
             $newAmount = $product["amount"] - $amount;
             $update = parent::$connection->prepare
@@ -98,6 +100,6 @@ class ProductsService extends Connection {
             $update->execute();
             return true;
         }
-        return false;
+        throw new CustomException("Could not buy $name because it exceeds the stock amount", 401);
     }
 }
