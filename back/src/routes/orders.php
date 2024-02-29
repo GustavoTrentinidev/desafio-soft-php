@@ -45,7 +45,13 @@ class Orders extends OrdersService {
             
         } else if($method == "POST"){
             $orderItems = json_decode(file_get_contents('php://input'), true);
-            echo parent::createOrder($orderItems);
+
+            try {
+                parent::createOrder($orderItems);
+                echo json_encode(array("message"=> "ok"));
+            } catch (CustomException $e){
+                echo json_encode(array("error"=> $e->getMessage()));
+            }
 
         }
     }

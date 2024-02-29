@@ -56,9 +56,11 @@ Class Categories extends CategoriesService {
             
             $id = explode('=', $_SERVER['QUERY_STRING'])[1];
             try {
-                echo parent::deleteCategory($id);
+                parent::deleteCategory($id);
+                echo json_encode(array("message"=> "ok"));
             } catch (CustomException $e){
-                echo $e;
+                $message = $e->getMessage();
+                echo json_encode(array("error"=> $message));
             }
         }
     }

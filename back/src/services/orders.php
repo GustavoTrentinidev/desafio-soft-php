@@ -37,7 +37,7 @@ class OrdersService extends Connection {
             self::updateTaxAndTotalOrderValue($id);
         } catch (CustomException $e){
             parent::$connection->prepare("DELETE FROM orders WHERE id = $id")->execute();
-            throw new CustomException("Couldn't create order duo to a stock problem", 409);
+            throw $e;
         }
     }
     

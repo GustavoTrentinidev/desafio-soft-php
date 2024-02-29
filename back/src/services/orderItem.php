@@ -48,7 +48,6 @@ class OrderItemService extends Connection {
             $orderItem->execute();
             return array("tax"=>$tax, "price"=>$price, "amount"=>$amount);
         } catch (CustomException $e) {
-            echo $e;
             throw $e;
         }
 

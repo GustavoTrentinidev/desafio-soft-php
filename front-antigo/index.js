@@ -12,15 +12,19 @@ class SuiteStore {
     }
 
     async fetchDataPOST(url, body){
-        await fetch(url, {
+        let res = fetch(url, {
             method: 'POST',
             body
+        }).then(response =>{
+            return response.json()
         })
+        let returned = await res;
+        return returned
     }
 
     async fetchDataDELETE(url){
         let response = await fetch(url, {method: 'DELETE',}).then(response=>{
-            return response.json()
+            return response.json()   
         })
         let returnRes = await response
         return returnRes     
@@ -59,12 +63,16 @@ class SuiteStore {
     }
 
     async deleteCategory(id){
+        const error = document.getElementById("purchase-error")
+        error.style.display = "none"
         let deleteResponse = await this.fetchDataDELETE(`http://localhost/routes/categories.php?id=${id}`)
-        if(deleteResponse.status == "ok"){
+        if(!deleteResponse.error){
             this.readCategories() 
             return
         } 
-        throw new Error("Cant delete nested categorys")
+        error.innerText = deleteResponse.error
+        this.popUp(error)
+        throw new Error(deleteResponse.error)
     }
     
     async readCategories(){
@@ -269,24 +277,19 @@ class SuiteStore {
         if(cart.length){
             id += cart.length
         }
-
         
-        if(product && amount && amount != "0"){
-            let productAlreatyInCart = this.verifyIfProductAlreadyInCart(product.id)
-            
-            if(productAlreatyInCart){
-                console.log(productAlreatyInCart)
-                this.updateCart(productAlreatyInCart, {amount, price})
-                return
-            }
+        let productAlreatyInCart = this.verifyIfProductAlreadyInCart(product.id)
+        
+        if(productAlreatyInCart){
+            console.log(productAlreatyInCart)
+            this.updateCart(productAlreatyInCart, {amount, price})
+            return
+        }
 
-            cart.push({product, amount, tax, price, active: true, id})
-            let stringifyiedCart = JSON.stringify(cart)
-            this.suiteLocalStorage.setItem("cart", stringifyiedCart)
-        }
-        else{
-           throw new Error("Please complete de inputs as expected.") 
-        }
+        cart.push({product, amount, tax, price, active: true, id})
+        let stringifyiedCart = JSON.stringify(cart)
+        this.suiteLocalStorage.setItem("cart", stringifyiedCart)
+        
         this.readCart()
     }
 
@@ -413,7 +416,6 @@ class SuiteStore {
 
     async finishCart(){
         const cart = this.getCartFromStorage()
-        const alert = document.getElementById("purchase-completed")
         if(cart.length){
             let buyedItems = cart.filter(item=>{
                 if(item.active){
@@ -421,7 +423,6 @@ class SuiteStore {
                 }
             }) 
             await this.addBuyToHistory(buyedItems)
-            this.popUp(alert)
             
         }
     }
@@ -437,34 +438,22 @@ class SuiteStore {
         let orderProductsArray = products.map(product=>{
             return {id: product.product.id, amount: parseInt(product.amount)}
         })
-
-        if(this.verifyOrderQuantity(products)){
-            await this.createOrder(orderProductsArray)
-            this.cancelCart()
-            this.getProductsOnHomePage()
-            return true
-        }
-        return false
+        await this.createOrder(orderProductsArray)
     }
 
     async createOrder(products){
-        await this.fetchDataPOST("http://localhost/routes/orders.php", JSON.stringify(products))
-    }
-
-
-    verifyOrderQuantity(products){
-        const error = document.getElementById("purchase-error")
-        products = products.map((pedido)=>{
-            if(parseInt(pedido.amount) > parseInt(pedido.product.amount)){
-                error.innerText = `Can't purchase the (${pedido.product.name}) item because it exceeds the product amount available.`
-                this.popUp(error)
-                throw new Error(`Can't purchase the ${pedido.product.name} item because it exceeds the product amount available.`)
-            }
-            return pedido
-        })
-        this.suiteLocalStorage.setItem("products", JSON.stringify(products))
+        let orderCreateRes = await this.fetchDataPOST("http://localhost/routes/orders.php", JSON.stringify(products))
+        if(orderCreateRes.error){
+            const error = document.getElementById("purchase-error")
+            error.innerText = orderCreateRes.error
+            this.popUp(error)
+            return
+        }
+        const alert = document.getElementById("purchase-completed")
+        this.popUp(alert)
+        this.cancelCart()
         this.getProductsOnHomePage()
-        return true
+
     }
 
     async readHistory(){
