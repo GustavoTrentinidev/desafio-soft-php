@@ -17,3 +17,16 @@ class Connection {
     }
 
 }
+
+$endPoints = array("endpoints"=>array(
+    "http://localhost/routes/categories.php",
+    "http://localhost/routes/categories.php?id=1",
+    "http://localhost/routes/products.php",
+    "http://localhost/routes/products.php?id=1",
+    "http://localhost/routes/orders.php",
+    "http://localhost/routes/orders.php?id=1"
+));
+
+if($_SERVER["REQUEST_URI"] == '/'){
+    echo json_encode($endPoints);
+}

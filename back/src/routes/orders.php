@@ -28,7 +28,7 @@ class Orders extends OrdersService {
     }
 
     public static function runRequestMethod(){
-        
+
         $method = $_SERVER['REQUEST_METHOD'];
         
         if($method == "GET"){
@@ -46,7 +46,7 @@ class Orders extends OrdersService {
         } else if($method == "POST"){
             $orderItems = json_decode(file_get_contents('php://input'), true);
             echo parent::createOrder($orderItems);
-        
+
         }
     }
 }
