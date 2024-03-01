@@ -1,0 +1,118 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 3rem);
+    overflow: hidden;
+}
+
+.opened {
+    background-color: #1d59a1;
+    color: #fff;
+    width: 150%;
+    animation: open 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.closed {
+    background-color: #fff;
+    width: 50%;
+    animation: close 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.opened form, .closed form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.opened form input{
+    border: 1px solid #fff;
+    border-radius: 5px;
+    outline: 0;
+    width: 10rem;
+    height: 2rem;
+    background-color: #1d59a1;
+    color: #fff;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.closed form input{
+    border: 1px solid #1d59a1;
+    border-radius: 5px;
+    outline: 0;
+    width: 10rem;
+    height: 2rem;
+    background-color: #fff;
+    color: #1d59a1;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+@keyframes open {
+    0% {
+        width: 50%;
+    }
+    100% {
+        width: 150%;
+    }
+}
+
+@keyframes close {
+    0% {
+        width: 150%;
+    }
+    100% {
+        width: 50%;
+    }
+}
+
+.login{
+    position: relative;
+}
+
+.bola{
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 100%;
+    bottom: -10rem;
+    right: -9rem;
+    transform: skew(20deg);
+    transition: all 0.5s ease-in-out;
+
+}
+
+.azul{
+    background-color: #1d59a1;
+}
+
+.branco{
+    background-color: #fff;
+}
+
+.auth-form-data{
+    display: flex;
+    flex-direction: column;
+}
+
+.error-handler{
+    height: 2rem;
+}
+
+#error-login, #error-register{
+    display: none;
+    width: 10rem;
+    text-wrap: wrap;
+    color: red;
+}

@@ -1,5 +1,6 @@
 <?php
-require_once("../index.php");
+
+require_once('../index.php');
 require_once("../services/products.php");
 require_once("../exceptions/customException.php");
 

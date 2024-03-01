@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suite Store Categories</title>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/auth.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="store-title">
+            <a href="./home.html">Suite Store</a>
+        </h1>
+        <ul class="header-itens">
+            <li>
+                <a href="./products.html">Products</a>
+            </li>
+            <li>
+                <a href="./categories.html">Categories</a>
+            </li>
+            <li>
+                <a href="./history.html">History</a>
+            </li>
+            <li>
+                <a href="./auth.html" id="login">Login</a>
+            </li>
+        </ul>
+    </div>
+    <main>
+        <div class="form login opened" id="form-login-side">
+            Login: 
+            <form onsubmit="suiteStore.setLoginInfo(event)">
+                <div class="auth-form-data">
+                    <label for="username">Username: </label>
+                    <input type="text" placeholder="username" id="login-username" name="username">
+                </div>
+                <div class="auth-form-data">
+                    <label for="password">Password: </label>
+                    <input type="password" placeholder="password" id="login-password" name="password">
+                </div>
+                <input type="submit" value="LogIn">
+                <div class="error-handler">
+                    <div id="error-login">Credenciais erradas.</div>
+                </div>
+            </form>
+            <div class="bola azul" id="bola"></div>
+        </div>
+        <div class="form register closed" id="form-register-side">
+            Register:
+            <form onsubmit="suiteStore.setRegisterInfo(event)">
+                <div class="auth-form-data">
+                    <label for="username">Username: </label>
+                    <input type="text" placeholder="username" id="register-username" name="username">
+                </div>
+                <div class="auth-form-data">
+                    <label for="password">Password: </label>
+                    <input type="password" placeholder="password" id="register-password" name="password">
+                </div>
+                <input type="submit" value="Register">
+            </form>
+            <div class="error-handler">
+                <div id="error-register">Credenciais erradas.</div>
+            </div>
+        </div>
+    </main>
+    <script src="../index.js"></script>
+    <script src="../auth.js"></script>
+</body>
+</html>

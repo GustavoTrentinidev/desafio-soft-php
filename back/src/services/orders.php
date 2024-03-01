@@ -1,37 +1,45 @@
 <?php
-require_once("../index.php");
+
+require_once('../index.php');
 require_once("../services/orderItem.php");
+require_once("../services/token.php");
 require_once("../exceptions/customException.php");
 
 
 class OrdersService extends Connection { 
 
     public static $orderItems = [];
-
+    
+    public static $userID;
+    
     public static $orderItemService;
 
-    public function __construct(array $orderItems = []){
+    public function __construct(array $orderItems = null){
         parent::__construct();
-        self::$orderItems = $orderItems;
         self::$orderItemService = OrderItemService::getInstance();
+        self::$orderItems = $orderItems;
+        $headers = apache_request_headers();
+        $token = $headers["Authorization"];
+        self::$userID = UserTokenService::getInstance()::verifyToken($token);
     }
 
-    public static function createOrder($orderItems){
+    public static function createOrder(){
+        $orderItems = self::$orderItems;
+        $userID = self::$userID;
         $id = 1;
         $ordersLength = parent::$connection->query("SELECT * FROM orders");
         $ordersLength = $ordersLength->fetchALL();
-        
 
         if($ordersLength){
             $id += count($ordersLength); 
         }
 
-        $order = parent::$connection->prepare("INSERT INTO orders (id, tax, total) values ($id, 0, 0)");
+        $order = parent::$connection->prepare("INSERT INTO orders (id, tax, total, user_id) values ($id, 0, 0, $userID)");
         $order->execute();
 
         try {
-            foreach($orderItems as $item=>$key){
-                $productTaxAndPrice = self::$orderItemService::createOrderItem($key["id"], $id, $key["amount"]);
+            foreach($orderItems as $item=>$value){
+                $productTaxAndPrice = self::$orderItemService::createOrderItem($value["id"], $id, $value["amount"]);
                 self::calcOrderTaxes($productTaxAndPrice);
             }
             self::updateTaxAndTotalOrderValue($id);
@@ -67,7 +75,8 @@ class OrdersService extends Connection {
     }
 
     public static function readOrders(){
-        $orders = parent::$connection->query("SELECT * FROM orders");
+        $user_id = self::$userID;
+        $orders = parent::$connection->query("SELECT * FROM orders WHERE user_id = $user_id");
         $orders = $orders->fetchALL();
         return json_encode($orders);
     }

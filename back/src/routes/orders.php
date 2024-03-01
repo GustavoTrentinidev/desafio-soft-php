@@ -1,5 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+
 require_once("../services/orders.php");
 
 
@@ -19,7 +21,7 @@ class Orders extends OrdersService {
     }
     
     public function __construct(){
-        if(!empty($_POST)){
+        if(isset($_POST)){
             $orderItems = json_decode(file_get_contents('php://input'), true);
             parent::__construct($orderItems);
             return;
@@ -44,10 +46,8 @@ class Orders extends OrdersService {
             echo parent::readOrders();
             
         } else if($method == "POST"){
-            $orderItems = json_decode(file_get_contents('php://input'), true);
-
             try {
-                parent::createOrder($orderItems);
+                parent::createOrder();
                 echo json_encode(array("message"=> "ok"));
             } catch (CustomException $e){
                 echo json_encode(array("error"=> $e->getMessage()));

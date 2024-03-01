@@ -4,7 +4,12 @@ class SuiteStore {
     addCartProductSelected = {}
     
     async fetchDataGET(url){
-        let requestData = fetch(url).then((response)=>{
+        let storageUser = JSON.parse(this.suiteLocalStorage.getItem("user")) || []
+        let requestData = fetch(url, {
+            headers: {
+                Authorization: storageUser.accessToken.token
+            }
+        }).then((response)=>{
             return response.json()
         })
         let data = await requestData
@@ -12,9 +17,13 @@ class SuiteStore {
     }
 
     async fetchDataPOST(url, body){
+        let storageUser = JSON.parse(this.suiteLocalStorage.getItem("user")) || []
         let res = fetch(url, {
             method: 'POST',
-            body
+            body,
+            headers: {
+                Authorization: storageUser.accessToken.token
+            }
         }).then(response =>{
             return response.json()
         })
@@ -423,7 +432,6 @@ class SuiteStore {
                 }
             }) 
             await this.addBuyToHistory(buyedItems)
-            
         }
     }
 
@@ -442,9 +450,10 @@ class SuiteStore {
     }
 
     async createOrder(products){
+        const error = document.getElementById("purchase-error")
+
         let orderCreateRes = await this.fetchDataPOST("http://localhost/routes/orders.php", JSON.stringify(products))
         if(orderCreateRes.error){
-            const error = document.getElementById("purchase-error")
             error.innerText = orderCreateRes.error
             this.popUp(error)
             return
@@ -453,7 +462,8 @@ class SuiteStore {
         this.popUp(alert)
         this.cancelCart()
         this.getProductsOnHomePage()
-
+        return 
+        
     }
 
     async readHistory(){
@@ -516,24 +526,109 @@ class SuiteStore {
 
     }
 
+    async login(data){
+        const error = document.getElementById("error-login")
+        error.style.display = 'none'
+        let loginReq = fetch("http://localhost/routes/auth/login.php", {
+            method: 'POST',
+            body: data,
+        }).then(res=>res.json())
+        let loginInfo = await loginReq
+        if(loginInfo.error){
+            error.innerText = loginInfo.error
+            error.style.display = 'block'
+            return
+        }
+        this.suiteLocalStorage.setItem("user", JSON.stringify(loginInfo))
+        window.location.pathname = '/front-antigo/pages/home.html'
+    }
+
+    setLoginInfo(e){
+        e.preventDefault()
+        const username = document.getElementById("login-username").value
+        const password = document.getElementById("login-password").value
+        
+        let formData = new FormData()
+        formData.append("username", username)
+        formData.append("password", password)
+
+        this.login(formData)
+        
+    }
+
+    async setRegisterInfo(e){
+        e.preventDefault()
+        const error = document.getElementById("error-register")
+        const username = document.getElementById("register-username").value
+        const password = document.getElementById("register-password").value
+    
+        let formData = new FormData()
+        formData.append("username", username)
+        formData.append("password", password)
+        
+        let registerReq = fetch("http://localhost/routes/auth/register.php", {
+            method: 'POST',
+            body: formData
+        }).then(res=>res.json())
+
+        
+        let registerInfo = await registerReq 
+        if(registerInfo.error){
+            error.innerText = registerInfo.error
+            error.style.display = 'block'
+        }
+
+        if(registerInfo.error){
+            console.log(registerInfo.error)
+            return
+        }
+        this.login(formData)
+    }
+
+    async logout(){
+        let storageUser = JSON.parse(this.suiteLocalStorage.getItem("user")) || []
+        if(storageUser.accessToken){
+            let logoutRes = await fetch("http://localhost/routes/auth/logout.php?id=2", {
+                headers: {
+                    Authorization: storageUser.accessToken.token
+                }
+            })
+        }
+        this.suiteLocalStorage.setItem("user", JSON.stringify({}))
+    }
+
+    requireAuth(){
+        let storageUser = JSON.parse(this.suiteLocalStorage.getItem("user")) || []
+        if(!storageUser.accessToken){
+            window.location.pathname = '/front-antigo/pages/auth.html'
+        }else {
+            let loginListItem = document.getElementById("login") 
+            loginListItem.innerText = "Logout"
+        }
+    }
+
     loadPage(){
         let pathNameSplit = window.location.pathname.split("/")
         let pageName = pathNameSplit[pathNameSplit.length - 1].split(".")[0]
 
         if(pageName == "categories"){
-            return this.readCategories()
+            return this.readCategories(), this.requireAuth()
         }
 
         if(pageName == "products"){
-            return this.getCategoriesOnProductsPage(), this.readProducts()
+            return this.getCategoriesOnProductsPage(), this.readProducts(), this.requireAuth()
         }
 
         if(pageName == "home"){
-            return this.getProductsOnHomePage(), this.readCart()
+            return this.getProductsOnHomePage(), this.readCart(), this.requireAuth()
         }
         
         if(pageName == "history"){
-            return this.readHistory()
+            return this.readHistory(), this.requireAuth()
+        }
+        
+        if(pageName == "auth"){
+            return this.logout()
         }
     }
 
