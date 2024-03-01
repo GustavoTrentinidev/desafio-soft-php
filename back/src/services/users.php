@@ -17,6 +17,9 @@ Class UsersService extends Connection {
     }
 
     public static function createUser(){
+        if(self::$username == '' || self::$username == ''){
+            throw new CustomException("Username or password can't be null", 401);
+        }
         try {
             $password = password_hash(self::$password, PASSWORD_DEFAULT);
             $user = parent::$connection->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
