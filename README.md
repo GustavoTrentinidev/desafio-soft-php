@@ -2,6 +2,7 @@
 ## Subindo o sistema
 
 Para subir o sistema, você pode executar o comando ``bash ./scripts/start.sh`` na raiz do projeto
+Para rodar o autoload do composer, você deve executar o comando ``bash ./scripts/dump_autoload.sh`` na raiz do projeto
 
 Para derrubar o sistema, você pode executar o comando ``bash ./scripts/stop.sh`` na raiz do projeto
 

@@ -1,9 +1,10 @@
 <?php
-header("Access-Control-Allow-Headers: *");
+    namespace App\Routes;
+    use App\Services\UserService;
+    use App\Exceptions\CustomException;
 
-require_once "../../services/users.php";
 
-class Users extends UsersService {
+class UserRoute extends UserService {
  
     private static $instance;
 
@@ -20,7 +21,7 @@ class Users extends UsersService {
     }
 
     public function __construct(){
-        if($_SERVER['SCRIPT_FILENAME'] != "/var/www/html/routes/auth/logout.php"){
+        if(!str_contains($_SERVER['REQUEST_URI'], "/routes/auth/logout.php")){
             $username = $_POST["username"];
             $password = $_POST["password"];
             parent::__construct($username, $password);

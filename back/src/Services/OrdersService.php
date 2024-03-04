@@ -1,10 +1,9 @@
 <?php
-
-require_once('../index.php');
-require_once("../services/orderItem.php");
-require_once("../services/token.php");
-require_once("../exceptions/customException.php");
-
+    namespace App\Services;
+    use App\Public\Index\Connection;
+    use App\Services\OrderItemService;
+    use App\Exceptions\CustomException;
+    use App\Services\TokenService;
 
 class OrdersService extends Connection { 
 
@@ -20,7 +19,7 @@ class OrdersService extends Connection {
         self::$orderItems = $orderItems;
         $headers = apache_request_headers();
         $token = $headers["Authorization"];
-        self::$userID = UserTokenService::getInstance()::verifyToken($token);
+        self::$userID = TokenService::getInstance()::verifyToken($token);
     }
 
     public static function createOrder(){

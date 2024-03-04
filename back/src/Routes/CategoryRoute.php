@@ -1,12 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: *");
-header("Access-Control-Allow-Headers: *");
-
-require_once("../services/categories.php");
+    namespace App\Routes;
+    use App\Services\CategoryService;
+    use App\Exceptions\CustomException;
 
 
-Class Categories extends CategoriesService {
+Class CategoryRoute extends CategoryService {
     
     private static $instance;
     
@@ -68,8 +66,6 @@ Class Categories extends CategoriesService {
     }
 
 }
-
-Categories::getInstance()::runRequestMethod();
 
 // $categoriesController = new Categories();
 // $categoriesController::runRequestMethod();

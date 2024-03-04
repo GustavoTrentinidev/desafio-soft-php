@@ -1,10 +1,10 @@
 <?php
+    namespace App\Services;
+    use App\Public\Index\Connection;
+    use App\Exceptions\CustomException;
 
-require_once('../index.php');
-require_once("../exceptions/customException.php");
 
-
-class CategoriesService extends Connection {
+class CategoryService extends Connection {
 
     static public $name;
     static public $tax;
@@ -18,7 +18,7 @@ class CategoriesService extends Connection {
     public static function readCategories($id){ 
             if($id){
                 $category = parent::$connection->prepare("SELECT * FROM categories where id = :id");
-                $category->bindParam(':id', $id, PDO::PARAM_INT);
+                $category->bindParam(':id', $id, \PDO::PARAM_INT);
                 $category->execute();
                 $category = $category->fetch();
                 return json_encode($category);
@@ -31,8 +31,8 @@ class CategoriesService extends Connection {
 
     public static function createCategory(){
         $category = parent::$connection->prepare("INSERT INTO categories (name, tax) VALUES (:name, :tax)");
-        $category->bindParam(':name', self::$name, PDO::PARAM_STR);
-        $category->bindParam(':tax', self::$tax, PDO::PARAM_STR);
+        $category->bindParam(':name', self::$name, \PDO::PARAM_STR);
+        $category->bindParam(':tax', self::$tax, \PDO::PARAM_STR);
         $category->execute();
         return true;
     }
@@ -41,7 +41,7 @@ class CategoriesService extends Connection {
         
         if(self::verifyIfCanDelete($id)){
             $delCategory = parent::$connection->prepare("UPDATE categories SET active = 0 WHERE id = :id");
-            $delCategory->bindParam(':id', $id, PDO::PARAM_INT);
+            $delCategory->bindParam(':id', $id, \PDO::PARAM_INT);
             $delCategory->execute();
             return;
         }

@@ -1,6 +1,9 @@
 <?php
 
-class CustomException extends Exception {
+namespace App\Exceptions;
+
+
+class CustomException extends \Exception {
 
     protected $message;
     protected $code = 0;

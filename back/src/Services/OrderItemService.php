@@ -1,9 +1,8 @@
 <?php
-
-require_once('../index.php');
-require_once("../services/products.php");
-require_once("../exceptions/customException.php");
-
+    namespace App\Services;
+    use App\Exceptions\CustomException;
+    use App\Public\Index\Connection;
+    use App\Services\ProductsService;
 
 class OrderItemService extends Connection {
     
@@ -12,6 +11,7 @@ class OrderItemService extends Connection {
     public function __construct(){
         parent::__construct();
         self::$productService = new ProductsService();
+        // testar sem instanciar o servico do produto
     }
 
     private static $instance;
@@ -35,17 +35,17 @@ class OrderItemService extends Connection {
         $price = $product["price"];
         $tax = $product["tax"];
         
-        
+        // testar sem instanciar o servico do produto
         try {
             self::$productService::updateProductStockValue($product, $amount);
             $orderItem = parent::$connection->prepare
             ("INSERT INTO order_item (name, price, amount, tax, product_id, order_id)
             VALUES (:name, :price, :amount, :tax, $productID, $orderID)
             ");
-            $orderItem->bindParam(":name", $name, PDO::PARAM_STR);
-            $orderItem->bindParam(":price", $price, PDO::PARAM_STR);
-            $orderItem->bindParam(":amount", $amount, PDO::PARAM_INT);
-            $orderItem->bindParam(":tax", $tax, PDO::PARAM_STR);
+            $orderItem->bindParam(":name", $name, \PDO::PARAM_STR);
+            $orderItem->bindParam(":price", $price, \PDO::PARAM_STR);
+            $orderItem->bindParam(":amount", $amount, \PDO::PARAM_INT);
+            $orderItem->bindParam(":tax", $tax, \PDO::PARAM_STR);
             $orderItem->execute();
             return array("tax"=>$tax, "price"=>$price, "amount"=>$amount);
         } catch (CustomException $e) {

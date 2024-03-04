@@ -1,15 +1,10 @@
 <?php
-
-if(explode("/", $_SERVER['SCRIPT_NAME'])[2] == 'auth'){
-    require_once('../../index.php');
-    require_once("../../exceptions/customException.php");
-} else{
-    require_once('../index.php');
-    require_once("../exceptions/customException.php");
-}
+    namespace App\Services;
+    use App\Public\Index\Connection;
+    use App\Exceptions\CustomException;
 
 
-class UserTokenService extends Connection {
+class TokenService extends Connection {
 
     private static $instance;
 

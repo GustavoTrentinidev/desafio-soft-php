@@ -1,11 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
+    namespace App\Routes;
+    use App\Services\OrdersService;
+    use App\Exceptions\CustomException;
 
-require_once("../services/orders.php");
 
-
-class Orders extends OrdersService {
+class OrdersRoute extends OrdersService {
 
     public static $instance;
 
@@ -57,4 +56,3 @@ class Orders extends OrdersService {
     }
 }
 
-Orders::getInstance()::runRequestMethod();

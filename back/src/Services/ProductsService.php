@@ -1,6 +1,7 @@
 <?php
-require_once("../index.php");
-require_once("../exceptions/customException.php");
+    namespace App\Services;
+    use App\Public\Index\Connection;
+    use App\Exceptions\CustomException;
 
 class ProductsService extends Connection {
 
@@ -39,7 +40,7 @@ class ProductsService extends Connection {
                 WHERE
                     p.id = :id 
                 ");
-                $product->bindParam(":id", $id, PDO::PARAM_INT);
+                $product->bindParam(":id", $id, \PDO::PARAM_INT);
                 $product->execute();
                 $product = $product->fetch();
                 return json_encode($product);
@@ -74,10 +75,10 @@ class ProductsService extends Connection {
         VALUES 
             (:name, :price, :category_id, :amount)
         ");
-        $product->bindParam(':name', self::$name, PDO::PARAM_STR);
-        $product->bindParam(':price', self::$price, PDO::PARAM_STR);
-        $product->bindParam(':category_id', self::$category_id, PDO::PARAM_INT);
-        $product->bindParam(':amount', self::$amount, PDO::PARAM_INT);
+        $product->bindParam(':name', self::$name, \PDO::PARAM_STR);
+        $product->bindParam(':price', self::$price, \PDO::PARAM_STR);
+        $product->bindParam(':category_id', self::$category_id, \PDO::PARAM_INT);
+        $product->bindParam(':amount', self::$amount, \PDO::PARAM_INT);
         $product->execute();
         return true;
     }
@@ -86,7 +87,7 @@ class ProductsService extends Connection {
         $id = explode("=", $_SERVER['QUERY_STRING'])[1];
         $id = (int)$id;
         $delProduct =parent::$connection->prepare("UPDATE products SET active = 0 WHERE id = :id");
-        $delProduct->bindParam(":id", $id, PDO::PARAM_INT);
+        $delProduct->bindParam(":id", $id, \PDO::PARAM_INT);
         $delProduct->execute();
         return 1;
     } 
