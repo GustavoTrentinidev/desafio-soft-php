@@ -1,9 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,800;6..12,1000&display=swap');
+
 main {
     display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - 3rem);
     overflow: hidden;
+}
+
+.auth-title{
+    font-weight: 900;
+    font-size: 3rem;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 .opened {
@@ -86,12 +94,22 @@ main {
     width: 350px;
     height: 350px;
     border-radius: 100%;
-    bottom: -10rem;
     right: -9rem;
-    transform: skew(20deg);
     transition: all 0.5s ease-in-out;
+}
+
+.bola:not(:last-child){
+    top: -13rem;
+    transform: skew(20deg);
 
 }
+
+.bola:last-child{
+    bottom: -10rem;
+    transform: skew(20deg);
+}
+
+
 
 .azul{
     background-color: #1d59a1;

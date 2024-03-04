@@ -29,7 +29,7 @@
     </div>
     <main>
         <div class="form login opened" id="form-login-side">
-            Login: 
+            <span class="auth-title">Login</span> 
             <form onsubmit="suiteStore.setLoginInfo(event)">
                 <div class="auth-form-data">
                     <label for="username">Username: </label>
@@ -44,10 +44,11 @@
                     <div id="error-login">Credenciais erradas.</div>
                 </div>
             </form>
+            <div class="bola branco" id="bola"></div>
             <div class="bola azul" id="bola"></div>
         </div>
         <div class="form register closed" id="form-register-side">
-            Register:
+            <span class="auth-title">Register</span>
             <form onsubmit="suiteStore.setRegisterInfo(event)">
                 <div class="auth-form-data">
                     <label for="username">Username: </label>

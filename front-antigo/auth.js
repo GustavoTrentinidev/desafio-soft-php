@@ -1,13 +1,15 @@
 const login = document.getElementById('form-login-side')
 const register = document.getElementById('form-register-side')
-const ball = document.getElementById('bola')
-
+const ball = document.querySelectorAll('.bola')
+console.log(ball)
 addEventListener("mouseover", (event) => {
-    if(event.srcElement == login){
-        toggleclassesBetweenSides(login,register)
-    }else if(event.srcElement == register){
-        toggleclassesBetweenSides(register,login)
-    }
+    setTimeout(()=>{
+        if(event.srcElement == login){
+            toggleclassesBetweenSides(login,register)
+        }else if(event.srcElement == register){
+            toggleclassesBetweenSides(register,login)
+        }
+    }, 200)
 });
 
 
@@ -23,6 +25,8 @@ function toggleclassesBetweenSides(openSide, closeSide){
 }
 
 function toggleBall(){
-    ball.classList.toggle("azul")
-    ball.classList.toggle("branco")
+    ball[1].classList.toggle("azul")
+    ball[1].classList.toggle("branco")
+    ball[0].classList.toggle("azul")
+    ball[0].classList.toggle("branco")
 }
