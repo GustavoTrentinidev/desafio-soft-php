@@ -1,5 +1,4 @@
 <?php
-    namespace App\Public\Index;
     use App\Router\Router;
     require_once "../vendor/autoload.php";
 
