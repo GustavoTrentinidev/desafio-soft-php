@@ -540,7 +540,7 @@ class SuiteStore {
             return
         }
         this.suiteLocalStorage.setItem("user", JSON.stringify(loginInfo))
-        window.location.pathname = '/front-antigo/pages/home.html'
+        this.routerPush("home.html")
     }
 
     setLoginInfo(e){
@@ -600,11 +600,17 @@ class SuiteStore {
     requireAuth(){
         let storageUser = JSON.parse(this.suiteLocalStorage.getItem("user")) || []
         if(!storageUser.accessToken){
-            window.location.pathname = '/front-antigo/pages/auth.html'
+            this.routerPush("auth.html")
         }else {
             let loginListItem = document.getElementById("login") 
             loginListItem.innerText = "Logout"
         }
+    }
+
+    routerPush(path){
+        let pathNameSplit = window.location.pathname.split("/")
+        pathNameSplit[pathNameSplit.length - 1] = path
+        window.location.pathname = pathNameSplit.join("/")
     }
 
     loadPage(){
