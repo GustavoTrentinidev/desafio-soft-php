@@ -1,7 +1,7 @@
 <?php
     namespace App\Services;
     use App\Exceptions\CustomException;
-    use App\Public\Index\Connection;
+    use App\Connection;
     use App\Services\ProductsService;
 
 class OrderItemService extends Connection {

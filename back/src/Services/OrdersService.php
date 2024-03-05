@@ -1,6 +1,6 @@
 <?php
     namespace App\Services;
-    use App\Public\Index\Connection;
+    use App\Connection;
     use App\Services\OrderItemService;
     use App\Exceptions\CustomException;
     use App\Services\TokenService;

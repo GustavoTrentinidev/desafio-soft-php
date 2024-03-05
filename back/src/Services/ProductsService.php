@@ -1,6 +1,6 @@
 <?php
     namespace App\Services;
-    use App\Public\Index\Connection;
+    use App\Connection;
     use App\Exceptions\CustomException;
 
 class ProductsService extends Connection {
