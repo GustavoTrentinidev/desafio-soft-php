@@ -1,7 +1,7 @@
 <?php
     namespace App\Public\Index;
-require_once "../vendor/autoload.php";
-
+    use App\Router\Router;
+    require_once "../vendor/autoload.php";
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: *");
@@ -26,33 +26,5 @@ class Connection {
     }
 }
 
-
 $URI = $_SERVER['REQUEST_URI'];
-
-$endPoints = array("endpoints"=>array(
-    "http://localhost/routes/categories.php",
-    "http://localhost/routes/categories.php?id=1",
-    "http://localhost/routes/products.php",
-    "http://localhost/routes/products.php?id=1",
-    "http://localhost/routes/orders.php",
-    "http://localhost/routes/orders.php?id=1"
-));
-
-
-if($URI == '/'){
-    echo json_encode($endPoints);
-} else if(str_contains($URI, '/routes/products.php')){
-    \App\Routes\ProductsRoute::getInstance()::runRequestMethod();
-} else if(str_contains($URI, '/routes/orders.php')){
-    \App\Routes\OrdersRoute::getInstance()::runRequestMethod();
-} else if(str_contains($URI, '/routes/categories.php')){
-    \App\Routes\CategoryRoute::getInstance()::runRequestMethod();
-} else if(str_contains($URI, "/routes/auth/login.php")){
-    \App\Routes\UserRoute::getInstance()::login();
-} else if(str_contains($URI, "/routes/auth/register.php")){
-    \App\Routes\UserRoute::getInstance()::register();
-} else if(str_contains($URI, "/routes/auth/logout.php")){
-    \App\Routes\UserRoute::getInstance()::logout();
-} else{
-    echo 404;
-}
+Router::Push($URI);
