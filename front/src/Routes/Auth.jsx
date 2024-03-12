@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil"
 import { setAuthHeaderToken, clearAuthHeaderToken } from "../plugins/axios"
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'
+import { redirect, useNavigate } from 'react-router-dom'
 
 
 export function AuthRoute(){
@@ -14,6 +14,7 @@ export function AuthRoute(){
     const [showPassowrd, setShowPassowrd] = useState(false) 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [userLoged, setUserLoged] = useState(false)
 
     const errorHolder = useRef()
     const container = useRef()
@@ -34,7 +35,7 @@ export function AuthRoute(){
         }
         setToken(response)
         setAuthHeaderToken(response.accessToken.token)
-        navigate('/')
+        setUserLoged(true)
     }
 
     async function register(e){
@@ -76,6 +77,7 @@ export function AuthRoute(){
 
     useEffect(()=>{
         disconnect()
+        setUserLoged(false)
     }, [])
 
 
@@ -118,6 +120,10 @@ export function AuthRoute(){
                             !userHasAccount &&
                             <button className="bg-blue-300 shadow-xl self-center w-32 text-blue-900 text-xl px-5 py-1 rounded cursor-pointer mt-5" onClick={switchContainer}> Log In</button>
                         }
+
+                        {
+                            userLoged &&
+                        navigate("/")}
                     </div>
                 </div>
             </div>

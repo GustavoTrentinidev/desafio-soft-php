@@ -5,10 +5,11 @@ import { Categories } from './Routes/Categories'
 import { Products } from './Routes/Products'
 // import { Header } from './components/Header/Header'
 import { History } from './Routes/History'
-import axios from 'axios'
+
 
 const requireAuth = () => {
-  if(axios.defaults.headers.common["Authorization"]){
+  const token = JSON.parse(localStorage.getItem("recoil-persist"))
+  if(token.tokenState.accessToken){
     return null
   }
   return redirect('/login')
