@@ -22,7 +22,7 @@ export function OrderModal({order, setOrder}){
     }
     
     return (
-        <div className="w-screen z-10 h-screen showPopUp bg-black bg-opacity-30 absolute top-0 left-0 flex justify-center items-center" id="overlay" ref={overlay} onClick={(e)=>{checkClick(e)}}>
+        <div className="w-screen z-10 h-screen showPopUp bg-black bg-opacity-30 fixed top-0 left-0 flex justify-center items-center" id="overlay" ref={overlay} onClick={(e)=>{checkClick(e)}}>
             <div className="bg-white relative p-2 showPopUp h-4/5 2xl:w-1/5 md:w-3/12 w-3/4 flex flex-col items-center z-10 rounded" ref={modal}>
                 <h1 className="text-3xl">Order {order.order_info.order_id}</h1>
                 <h1 className="text-xl">Products:</h1>

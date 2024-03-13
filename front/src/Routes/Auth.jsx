@@ -123,7 +123,8 @@ export function AuthRoute(){
 
                         {
                             userLoged &&
-                        navigate("/")}
+                            navigate("/")
+                        }
                     </div>
                 </div>
             </div>
