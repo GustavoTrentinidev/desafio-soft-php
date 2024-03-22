@@ -6,8 +6,7 @@ pushd $(dirname $0) > /dev/null
 
 ID=$(docker inspect --format="{{.Id}}" php_desafio)
 
-docker exec -it $ID bash -c "composer dump-autoload";
-docker exec -it $ID bash -c "composer require --dev phpunit/phpunit ^10";
+docker exec -it $ID bash -c "vendor/bin/phpunit --colors src/Tests/";
 
 # Return to the previous directory
 popd > /dev/null

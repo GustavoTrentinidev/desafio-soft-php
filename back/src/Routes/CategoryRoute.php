@@ -49,7 +49,7 @@ Class CategoryRoute extends CategoryService {
         }
          else if($method == "POST"){
 
-            echo parent::createCategory();
+            echo json_encode(parent::createCategory());
 
         }
          else if($method == "DELETE"){
